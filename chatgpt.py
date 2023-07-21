@@ -7,14 +7,14 @@ from gi.repository import Gtk, GLib, Gdk
 
 import openai
 
-openai.api_key = "Your API KEY" # Sign Up in www.openai.com and create your own API key
+openai.api_key = "your_api_key"
 
 
 class ChatWindow(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Chat with ChatGPT")
-        self.set_default_size(600, 600)  # Set the default size of the window
-
+        super().__init__(title="ChatGPT")
+        self.set_default_size(300, 600)  # Set the default size of the window
+        self.set_icon_from_file("gpt.png")
         self.set_border_width(10)
 
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -25,16 +25,18 @@ class ChatWindow(Gtk.Window):
 
 
 
-        label_model = Gtk.Label.new("Model:")
+        label_model = Gtk.Label.new("Model: ")
         grid_engine_model.attach(label_model, 0, 0, 1, 1)
 
         self.combo_model = Gtk.ComboBoxText.new()
+        self.combo_model.append_text("gpt-3.5-turbo-16k")
         self.combo_model.append_text("gpt-3.5-turbo")
+        self.combo_model.append_text("gpt-3.5-turbo-0613")
         self.combo_model.append_text("gpt-3.5-turbo-0301")
         self.combo_model.set_active(0)
         grid_engine_model.attach(self.combo_model, 3, 0, 1, 1)
 
-        label_temperature = Gtk.Label.new(" Temperature:")
+        label_temperature = Gtk.Label.new(" Temperature: ")
         grid_engine_model.attach(label_temperature, 4, 0, 1, 1)
 
         self.combo_temperature = Gtk.ComboBoxText.new()
@@ -53,12 +55,12 @@ class ChatWindow(Gtk.Window):
         self.combo_temperature.set_active(0)  # Default selection: 0
         grid_engine_model.attach(self.combo_temperature, 5, 0, 1, 1)
 
-        label_max_tokens = Gtk.Label.new(" Max Tokens:")
+        label_max_tokens = Gtk.Label.new(" Max Tokens: ")
         grid_engine_model.attach(label_max_tokens, 6, 0, 1, 1)
 
         self.entry_max_tokens = Gtk.Entry.new()
         self.entry_max_tokens.set_width_chars(6)  # Set the width of the entry widget
-        self.entry_max_tokens.set_text("1000")  # Default value: 1000
+        self.entry_max_tokens.set_text("16000")  # Default value: 1000
         grid_engine_model.attach(self.entry_max_tokens, 7, 0, 1, 1)
 
         hbox_buttons = Gtk.Box(spacing=5)
@@ -90,7 +92,7 @@ class ChatWindow(Gtk.Window):
         context = self.save_log_switch.get_style_context()
         context.add_provider(css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
-        save_log_label = Gtk.Label.new("Log")
+        save_log_label = Gtk.Label.new("  Log")
         hbox_buttons.pack_end(save_log_label, False, False, 0)
 
         scrolled_window = Gtk.ScrolledWindow.new()
